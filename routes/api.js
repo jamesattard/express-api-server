@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Post = require('../models/post');
 
 // Get a list of posts from the db
 router.get('/posts', function(req, res){
@@ -8,11 +9,17 @@ router.get('/posts', function(req, res){
 
 // Add a new post to the db
 router.post('/posts', function(req, res){
-  res.send({
-    type: 'POST',
+  const post = new Post({
     title: req.body.title,
-    content: req.body.content
-  })
+    content: req.body.content,
+    tag: req.body.tag
+  });
+
+  // Save to database
+  post.save(function(){
+    // Respond to request indicating the post was created
+    res.json(post);
+  });
 });
 
 // Update a post in the db
