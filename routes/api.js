@@ -8,7 +8,11 @@ router.get('/posts', function(req, res){
 
 // Add a new post to the db
 router.post('/posts', function(req, res){
-  res.send({type: 'POST'});
+  res.send({
+    type: 'POST',
+    title: req.body.title,
+    content: req.body.content
+  })
 });
 
 // Update a post in the db

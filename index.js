@@ -9,6 +9,7 @@ const app = express();
 
 // App Setup
 app.use(morgan('combined'));
+app.use(bodyParser.json());
 
 // Initialise routes (prefix /api)
 app.use('/api', require('./routes/api'));
