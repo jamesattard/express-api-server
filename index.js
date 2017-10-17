@@ -10,9 +10,8 @@ const app = express();
 // App Setup
 app.use(morgan('combined'));
 
-app.get('/api', function(req, res){
-  res.send({'type': 'GET request'});
-});
+// Initialise routes (prefix /api)
+app.use('/api', require('./routes/api'));
 
 // Server Setup
 app.listen(process.env.port || 4000, function(){
