@@ -11,6 +11,7 @@ mongoose.Promise = global.Promise;
 
 // App Setup
 app.use(morgan('combined'));
+app.use("/public", express.static('./public'));
 app.use(bodyParser.json());
 
 // Initialise routes (prefix /api)
