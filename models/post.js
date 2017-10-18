@@ -22,9 +22,9 @@ const PostSchema = new Schema({
   content: {
     type: String
   },
-  tag: {
-    type: String,
-    default: 'news'
+  publish: {
+    type: Boolean,
+    default: false
   },
   geometry: GeoSchema
 });

@@ -14,5 +14,56 @@
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <script src="https://unpkg.com/react@15/dist/react.js"></script>
     <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>﻿
+
+    <!-- Create React Component -->
+    <script type="text/babel">
+      var Posts = React.createClass({
+        getInitialState: function(){
+          return({
+            posts: []
+          });
+        },
+        render: function(){
+          var posts = this.state.posts;
+          posts = posts.map(function(post, index){
+            return(
+              <li key={index}>
+                <span className={post.obj.publish}></span>
+                <span className="ptitle">{post.obj.title}</span>
+                <span className="content">{post.obj.content}</span>
+                <span className="dist">{Math.floor(post.dis / 1000)} km></span>
+              </li>
+            )
+          });
+          return(
+            <div id="posts-container">
+              <form id="search" onSubmit={this.handleSubmit}>
+                <label>Enter you latitude:</label>
+                <input type="text" ref="lat" placeholder="latitude" required />
+                <label>Enter you longitude:</label>
+                <input type="text" ref="lng" placeholder="longitude" required />
+                <input type="submit" value="Find Posts" />
+              </form>
+              <ul>{posts}</ul>
+            </div>
+          );
+        },
+        handleSubmit: function(e){
+          e.preventDefault();
+          var lng = this.refs.lng.value;
+          var lat = this.refs.lat.value;
+
+          fetch('/api/posts?lng=' + lng + '&lat=' + lat).then(function(data){
+            return data.json();
+          }).then( json => {
+            this.setState({
+              posts: json
+            });
+          });
+        }
+      });
+
+      ReactDOM.render(<Posts />, document.getElementById("posts"));
+    </script>
   </body>
 </html>
