@@ -9,26 +9,25 @@ router.get('/posts', function(req, res, next){
 
 // Add a new post to the db
 router.post('/posts', function(req, res, next){
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-    tag: req.body.tag
-  });
-
-  post.save(function(err){
-    if (err) { return next(err); }
-    res.json(post);
-  });
+  Post.create(req.body).then(function(post){
+    res.send(post);
+  }).catch(next);
 });
 
 // Update a post in the db
 router.put('/posts/:id', function(req, res, next){
-  res.send({type: 'PUT'});
+  Post.findByIdAndUpdate({_id: req.params.id}, req.body).then(function(){
+    Post.findOne({_id: req.params.id}).then(function(post){
+      res.send(post);
+    });
+  });
 });
 
 // Delete a post from the db
 router.delete('/posts/:id', function(req, res, next){
-  res.send({type: 'DELETE'});
+  Post.findByIdAndRemove({_id: req.params.id}).then(function(post){
+    res.send(post);
+  }).catch(next);
 });
 
 module.exports = router;
