@@ -4,7 +4,15 @@ const Post = require('../models/post');
 
 // Get a list of posts from the db
 router.get('/posts', function(req, res, next){
-  res.send({type: 'GET'});
+  // Post.find({}).then(function(posts){
+  //   res.send(posts);
+  // });
+  Post.geoNear(
+    {type: 'Point', coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)]},
+    {maxDistance: 100000, spherical: true}
+  ).then(function(posts){
+    res.send(posts);
+  });
 });
 
 // Add a new post to the db
